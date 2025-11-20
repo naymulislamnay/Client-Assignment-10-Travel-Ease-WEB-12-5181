@@ -1,19 +1,22 @@
 import React from "react";
 import travelBg from "../assets/travel-bg.jpg";
 import { Link } from "react-router";
+import Logo from "../../components/Logo";
 
 const LogIn = () => {
     return (
         <div
             className="h-screen bg-cover bg-center flex justify-between items-center mx-auto"
-            style={{ backgroundImage: `url(${travelBg})` }}
+            style={{ backgroundImage: `linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url(${travelBg})` }}
         >
 
             {/* Left side div or theme Context */}
             <div className="bg-opacity-50 p-8 rounded h-fit w-1/2">
-                <h1 className="text-5xl text-white font-bold mb-4">TravelEase</h1>
+                <div className='text-5xl mb-4'>
+                    <Logo></Logo>
+                </div>
                 <p className="text-white text-lg">
-                    Explore the world with ease. Your adventure starts here.
+                    Log in to access your personalized dashboard, manage your vehicles, track bookings, and continue your travel planning. Your next journey starts right here.
                 </p>
             </div>
 
