@@ -1,5 +1,7 @@
 import React from "react";
 import styled from "styled-components";
+import { formatDateTime } from "../functionsForGlobalUse/GlobalFunction";
+import { Link } from "react-router";
 
 const VehicleCard = ({ vehicle }) => {
   return (
@@ -54,9 +56,18 @@ const VehicleCard = ({ vehicle }) => {
           </div>
 
           {/* BACK SIDE */}
-          <div className="flip-card-back">
-            <p className="title">BACK</p>
-            <p>Leave Me</p>
+          <div className="flip-card-back text-left px-2.5">
+            <p className="title">Vehicle Name : {vehicle.vehicleName}</p>
+            <p className="title">Price Per Day : {vehicle.pricePerDay} $</p>
+            <p className="title">Owner Name : {vehicle.owner}</p>
+            <p className="title">Owner Email : {vehicle.userEmail}</p>
+            <p className="title">Availability : {vehicle.availability}</p>
+            <p className="title">Posted On : {formatDateTime(vehicle.createdAt)}</p>
+            <Link to={`/vehicles/${vehicle._id}`} className='flex mx-auto w-fit'>
+              <button className="btn bg-linear-to-br from-[#024c58] to-[#07b6d5] border-none text-[10px] md:text-[13px] lg:text-[16px] text-white mt-2.5">
+                See More
+              </button>
+            </Link>
           </div>
 
         </div>
