@@ -48,7 +48,7 @@ const AuthProvider = ({ children }) => {
         return signInWithPopup(auth, googleProvider)
     }
 
-    const signOutUserFunction = () => {
+    const signOutUser = () => {
         setLoading(true);
         return signOut(auth);
     };
@@ -65,7 +65,7 @@ const AuthProvider = ({ children }) => {
         signInWithEmailAndPasswordFunction,
         updateProfileFunction,
         sendEmailVerificationFunction,
-        signOutUserFunction,
+        signOutUser,
         sendPasswordResetEmailFunction,
         googleSignIn,
         loading,
@@ -83,7 +83,11 @@ const AuthProvider = ({ children }) => {
         };
     }, []);
 
-    return <AuthContext value={authInfo}>{children}</AuthContext>
+    return (
+        <AuthContext value={authInfo}>
+            {children}
+        </AuthContext>
+    )
 };
 
 export default AuthProvider;

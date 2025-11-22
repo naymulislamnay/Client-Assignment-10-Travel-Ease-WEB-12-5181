@@ -1,9 +1,96 @@
-import React from 'react';
+import React, { useContext, useState } from 'react';
 import travelBg from "../assets/travel-bg.jpg";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import Logo from '../../components/Logo';
+import { AuthContext } from '../../context/AuthContext';
 
 const SignUP = () => {
+    const {
+        googleSignIn,
+        createUserWithEmailAndPasswordFunction,
+    } = useContext(AuthContext);
+
+
+    const navigate = useNavigate();
+
+    const [formData, setFormData] = useState({
+        name: '',
+        email: '',
+        photoURL: '',
+        password: '',
+    });
+
+    const handleChange = (e) => {
+        setFormData({ ...formData, [e.target.name]: e.target.value });
+    };
+
+    const handleSignUP = (e) => {
+        e.preventDefault();
+        const { name, email, photoURL, password } = formData;
+        if (!name || !email || !password) {
+            alert("Name, Email & Password are required");
+            return;
+        }
+
+        if (password.length < 6) {
+            alert("Password must be at least 6 characters");
+            return;
+        }
+
+        createUserWithEmailAndPasswordFunction(email, password)
+            .then(() => {
+                const newUser = {
+                    name: name,
+                    email: email,
+                    image: photoURL || '../../public/default-Profile.png'
+                }
+
+                fetch('http://localhost:3000/users', {
+                    method: 'POST',
+                    headers: {
+                        'content-type': 'application/json'
+                    },
+                    body: JSON.stringify(newUser)
+                })
+                    .then(res => res.json())
+                    .then(() => navigate('/'))
+            })
+            .catch(error => {
+                console.log(error);
+            });
+    }
+
+
+
+    const handleGoogleSignIn = () => {
+        googleSignIn()
+            .then(result => {
+                console.log(result.user);
+                const newUser = {
+                    name: result.user.displayName,
+                    email: result.user.email,
+                    image: result.user.photoURL
+                }
+
+                // create user in the database
+                fetch('http://localhost:3000/users', {
+                    method: 'POST',
+                    headers: {
+                        'content-type': 'application/json'
+                    },
+                    body: JSON.stringify(newUser)
+                })
+                    .then(res => res.json())
+                    .then(data => {
+                        console.log('data after user save', data)
+                    })
+
+            })
+            .catch(error => {
+                console.log(error)
+            })
+    }
+
     return (
         <div
             className="h-screen bg-cover bg-center flex justify-between items-center mx-auto"
@@ -26,12 +113,38 @@ const SignUP = () => {
                 <h1 className="text-3xl font-bold text-center mb-6">Register Now</h1>
 
 
+                {/* Name */}
+                <div className="flex flex-col mb-4">
+                    <label className="mb-1 text-sm">Name</label>
+                    <input
+                        type="text"
+                        name='name'
+                        onChange={handleChange}
+                        placeholder="Enter your Name"
+                        className="px-4 py-3 rounded-xl bg-black/30 border border-white/40 text-white placeholder:text-blue-200 focus:outline-none"
+                    />
+                </div>
+
                 {/* Email */}
                 <div className="flex flex-col mb-4">
                     <label className="mb-1 text-sm">Email</label>
                     <input
                         type="email"
-                        placeholder="Enter your email"
+                        name='email'
+                        onChange={handleChange}
+                        placeholder="Enter your Email"
+                        className="px-4 py-3 rounded-xl bg-black/30 border border-white/40 text-white placeholder:text-blue-200 focus:outline-none"
+                    />
+                </div>
+
+                {/* Photo Link */}
+                <div className="flex flex-col mb-4">
+                    <label className="mb-1 text-sm">Photo URL</label>
+                    <input
+                        type="text"
+                        name='photoURL'
+                        onChange={handleChange}
+                        placeholder="Enter your Photo URL"
                         className="px-4 py-3 rounded-xl bg-black/30 border border-white/40 text-white placeholder:text-blue-200 focus:outline-none"
                     />
                 </div>
@@ -42,6 +155,8 @@ const SignUP = () => {
                     <label className="mb-1 text-sm">Password</label>
                     <input
                         type="password"
+                        name='password'
+                        onChange={handleChange}
                         placeholder="Enter your password"
                         className="px-4 py-3 rounded-xl bg-black/30 border border-white/40 text-white placeholder:text-blue-200 focus:outline-none"
                     />
@@ -49,13 +164,18 @@ const SignUP = () => {
 
 
                 {/* Button */}
-                <button className="w-full py-3 rounded-xl font-semibold bg-blue-700 hover:bg-blue-800 transition-all">
+                <button
+                    onClick={handleSignUP}
+                    className="w-full py-3 rounded-xl font-semibold bg-blue-700 hover:bg-blue-800 transition-all">
                     Sign Up
                 </button>
 
 
                 {/* Sign in with Google Button */}
-                <button className="btn bg-white text-black border-[#e5e5e5] w-full mt-4">
+                <button
+                    type="button"
+                    onClick={handleGoogleSignIn}
+                    className="btn bg-white text-black border-[#e5e5e5] w-full mt-4">
                     <svg aria-label="Google logo" width="16" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><g><path d="m0 0H512V512H0" fill="#fff"></path><path fill="#34a853" d="M153 292c30 82 118 95 171 60h62v48A192 192 0 0190 341"></path><path fill="#4285f4" d="m386 400a140 175 0 0053-179H260v74h102q-7 37-38 57"></path><path fill="#fbbc02" d="m90 341a208 200 0 010-171l63 49q-12 37 0 73"></path><path fill="#ea4335" d="m153 219c22-69 116-109 179-50l55-54c-78-75-230-72-297 55"></path></g></svg>
                     Sign-Up with Google
                 </button>

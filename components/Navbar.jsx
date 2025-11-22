@@ -1,9 +1,16 @@
 import React from 'react';
 import { Link, NavLink } from 'react-router';
 import Logo from './Logo';
+import useAuth from '../hooks/useAuth';
 
 const Navbar = () => {
-    const user = false; //firebase theke user status add korte hobe
+    const { user, signOutUser } = useAuth();
+
+    const handleSignOut = () => {
+        signOutUser()
+            .then(() => console.log('User signed out'))
+            .catch(err => console.log(err));
+    }
 
     const navLinkClass = ({ isActive }) => `hover:text-[#07b6d5] ${isActive ? 'text-[#07b6d5] underline' : ''}`;
 
@@ -48,12 +55,13 @@ const Navbar = () => {
                     {user && (
                         <div className="group cursor-pointer flex gap-1.5">
                             <img
-                                src="https://i.pravatar.cc/300"
-                                alt="User" title=''
+                                src={user.photoURL || '../public/default-Profile.png'}
+                                alt={user.displayName} title={user.displayName}
                                 className="w-11 h-11 rounded-full border-2 border-white object-cover"
                             />
 
                             <button
+                                onClick={handleSignOut}
                                 className="px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-semibold shadow"
                             >
                                 Log Out
