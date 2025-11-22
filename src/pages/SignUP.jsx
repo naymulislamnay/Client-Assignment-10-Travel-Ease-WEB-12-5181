@@ -42,7 +42,7 @@ const SignUP = () => {
                 const newUser = {
                     name: name,
                     email: email,
-                    image: photoURL || '../../public/default-Profile.png'
+                    image: photoURL || '/default-Profile.png'
                 }
 
                 fetch('http://localhost:3000/users', {

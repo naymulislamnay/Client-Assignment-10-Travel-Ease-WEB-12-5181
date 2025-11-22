@@ -10,3 +10,17 @@
 @plugin "daisyui" {
   themes: light --default;
 }
+
+@keyframes fadeOut {
+  0% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+  }
+}
+
+.animate-fade {
+  animation: fadeOut 3s forwards;
+}

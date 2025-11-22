@@ -55,7 +55,7 @@ const Navbar = () => {
                     {user && (
                         <div className="group cursor-pointer flex gap-1.5">
                             <img
-                                src={user.photoURL || '../public/default-Profile.png'}
+                                src={user.photoURL || '/default-Profile.png'}
                                 alt={user.displayName} title={user.displayName}
                                 className="w-11 h-11 rounded-full border-2 border-white object-cover"
                             />

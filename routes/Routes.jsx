@@ -9,6 +9,7 @@ import AllVehicles from "../src/pages/AllVehicles";
 import VehicleDetails from "../src/pages/VehicleDetails";
 import MyBookings from "../src/pages/MyBookings";
 import MyVehicles from "../src/pages/MyVehicles";
+import PrivateRoute from "../privateRoute/PrivateRoute";
 
 const router = createBrowserRouter(
     [
@@ -35,23 +36,43 @@ const router = createBrowserRouter(
                 },
                 {
                     path: '/profile',
-                    element: <Profile></Profile>
+                    element: (
+                        <PrivateRoute>
+                            <Profile></Profile>
+                        </PrivateRoute>
+                    )
                 },
                 {
                     path: '/vehicles',
-                    element: <AllVehicles></AllVehicles>
+                    element: (
+                        <PrivateRoute>
+                            <AllVehicles></AllVehicles>
+                        </PrivateRoute>
+                    )
                 },
                 {
                     path: '/vehicles/:id',
-                    element: <VehicleDetails></VehicleDetails>
+                    element: (
+                        <PrivateRoute>
+                            <VehicleDetails></VehicleDetails>
+                        </PrivateRoute>
+                    )
                 },
                 {
                     path: '/my-bookings',
-                    element: <MyBookings></MyBookings>
+                    element: (
+                        <PrivateRoute>
+                            <MyBookings></MyBookings>
+                        </PrivateRoute>
+                    )
                 },
                 {
                     path: '/my-vehicles',
-                    element: <MyVehicles></MyVehicles>
+                    element: (
+                        <PrivateRoute>
+                            <MyVehicles></MyVehicles>
+                        </PrivateRoute>
+                    )
                 },
             ]
         }
