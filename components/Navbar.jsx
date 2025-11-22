@@ -54,11 +54,13 @@ const Navbar = () => {
                     {/* if user is logged in */}
                     {user && (
                         <div className="group cursor-pointer flex gap-1.5">
-                            <img
-                                src={user.photoURL || '/default-Profile.png'}
-                                alt={user.displayName} title={user.displayName}
-                                className="w-11 h-11 rounded-full border-2 border-white object-cover"
-                            />
+                            <Link to='/profile'>
+                                <img
+                                    src={user.photoURL || '/default-Profile.png'}
+                                    alt={user.displayName} title={user.displayName}
+                                    className="w-11 h-11 rounded-full border-2 border-white object-cover"
+                                />
+                            </Link>
 
                             <button
                                 onClick={handleSignOut}

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Slider from '../../components/Slider';
 import VehicleCard from '../../components/VehicleCard';
 import Loader from '../../components/Loader';
+import { Link } from 'react-router';
 
 const Home = () => {
     const [sliderVehicles, setSliderVehicles] = useState([]);
@@ -40,7 +41,9 @@ const Home = () => {
                 <div className="mt-3 md:mt-5 lg:mt-7.5 p-1 lg:p-0 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2.5">
                     {
                         latestVehicles.map(vehicle => (
-                            <VehicleCard key={vehicle._id} vehicle={vehicle}></VehicleCard>
+                            <Link to={`/vehicles/${vehicle._id}`}>
+                                <VehicleCard key={vehicle._id} vehicle={vehicle}></VehicleCard>
+                            </Link>
                         ))
                     }
                 </div>
