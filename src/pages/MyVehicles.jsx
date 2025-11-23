@@ -2,6 +2,8 @@ import React, { useEffect, useState, useContext } from 'react';
 import { AuthContext } from '../../context/AuthContext';
 import VehicleCardForAllVehiclePage from '../../components/VehicleCardForAllVehiclePage';
 import Loader from '../../components/Loader';
+import DropdownMenu from '../../components/DropdownMenu';
+import Swal from "sweetalert2";
 
 const MyVehicles = () => {
     const { user } = useContext(AuthContext);
@@ -34,12 +36,12 @@ const MyVehicles = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const token = await user.getIdToken();  // <- await here
+            const token = await user.getIdToken();
             const res = await fetch("http://localhost:3000/vehicles", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
-                    "Authorization": `Bearer ${token}`  // now correct
+                    "Authorization": `Bearer ${token}`
                 },
                 body: JSON.stringify(formData),
             });
@@ -54,7 +56,7 @@ const MyVehicles = () => {
 
 
     useEffect(() => {
-        if (!user?.email) return; // wait for logged-in user
+        if (!user?.email) return;
 
         fetch(`http://localhost:3000/vehicles?userEmail=${user.email}`)
             .then(res => res.json())
@@ -67,6 +69,38 @@ const MyVehicles = () => {
                 setLoading(false);
             });
     }, [user]);
+
+
+    // for delete the vehicle
+    const handleDelete = async (id) => {
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to restore this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, delete it!"
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                try {
+                    const res = await fetch(`http://localhost:3000/vehicles/${id}`, {
+                        method: "DELETE"
+                    });
+                    const data = await res.json();
+                    console.log(data)
+
+                    setMyVehicles(prev => prev.filter(v => v._id !== id));
+
+                    Swal.fire("Deleted!", "Vehicle has been removed.", "success");
+                }
+                catch (err) {
+                    console.log(err);
+                    Swal.fire("Error", "Failed to delete vehicle.", "error");
+                }
+            }
+        });
+    };
 
     if (loading) {
         return <Loader></Loader>;
@@ -102,7 +136,14 @@ const MyVehicles = () => {
             {/* If vehicles found */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {myVehicles.map(vehicle => (
-                    <VehicleCardForAllVehiclePage key={vehicle._id} vehicle={vehicle} />
+                    <div className='relative' key={vehicle._id}>
+                        <VehicleCardForAllVehiclePage vehicle={vehicle} />
+
+                        <div className='absolute top-3 right-3'>
+                            <DropdownMenu vehicle={vehicle} handleDelete={handleDelete}></DropdownMenu>
+                        </div>
+                    </div>
+
                 ))}
             </div>
 

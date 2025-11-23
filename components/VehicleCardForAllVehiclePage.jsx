@@ -2,7 +2,7 @@ import React from 'react';
 import { formatDateTime } from '../functionsForGlobalUse/GlobalFunction';
 
 const VehicleCardForAllVehiclePage = ({ vehicle }) => {
-    // Dynamic badge color
+
     const availabilityColor =
         vehicle.availability === "Available"
             ? "bg-green-600"
@@ -23,8 +23,7 @@ const VehicleCardForAllVehiclePage = ({ vehicle }) => {
                     <img
                         src={vehicle.coverImage}
                         alt="vehicle"
-                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                    />
+                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
 
                     {/* Availability Badge */}
                     <span
@@ -57,10 +56,7 @@ const VehicleCardForAllVehiclePage = ({ vehicle }) => {
                         <div className="badge badge-outline text-[10px]">{formatDateTime(vehicle.createdAt)}</div>
                         <button
                             className="
-                            py-2 px-4 rounded-xl bg-cyan-600 text-white text-sm font-medium
-                            shadow-md hover:bg-cyan-700 transition-all duration-200
-                        "
-                        >
+                            py-2 px-4 rounded-xl bg-cyan-600 text-white text-sm font-medium shadow-md hover:bg-cyan-700 transition-all duration-200 hover:cursor-pointer">
                             View Details
                         </button>
                     </div>
