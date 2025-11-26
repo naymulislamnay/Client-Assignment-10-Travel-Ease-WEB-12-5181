@@ -1,15 +1,21 @@
 import axios from 'axios';
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router';
 import Loader from '../../components/Loader';
 import { MapPin, User, Car, Calendar, Mail } from "lucide-react";
 import { formatDateTime } from '../../functionsForGlobalUse/GlobalFunction';
+import { AuthContext } from '../../context/AuthContext';
+import ConfirmationModal from '../../components/ConfirmationModal';
 
 const VehicleDetails = () => {
+    const { user } = useContext(AuthContext);
     const { id } = useParams();
     const [vehicle, setVehicle] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
+    const [showModal, setShowModal] = useState(false);
+    const [modalMessage, setModalMessage] = useState("");
+
 
     useEffect(() => {
         const fetchVehicle = async () => {
@@ -30,6 +36,37 @@ const VehicleDetails = () => {
     if (loading) return <Loader />;
     if (error) return <div className="text-center py-10 text-red-500">{error}</div>;
     if (!vehicle) return <div className="text-center py-10 text-gray-500">Vehicle not found.</div>;
+
+
+    const handleBooking = async () => {
+        try {
+            const token = await user.getIdToken();
+
+            const res = await axios.post(
+                "http://localhost:3000/bookings",
+                {
+                    vehicleId: id,
+                    email: user.email
+                },
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                }
+            );
+
+            setModalMessage("Your booking was successful!");
+            setShowModal(true);
+
+            const updated = await axios.get(`http://localhost:3000/vehicles/${id}`);
+            setVehicle(updated.data);
+
+        } catch (err) {
+            console.log(err);
+            setModalMessage(err.response?.data?.message || "Booking failed.");
+            setShowModal(true);
+        }
+    };
 
     return (
         <div className="max-w-5xl mx-auto my-10 p-6">
@@ -109,12 +146,13 @@ const VehicleDetails = () => {
 
                 {/* BOOK NOW BUTTON */}
                 <div className="text-center">
-                    <button className="
-                        px-10 py-4 bg-linear-to-r from-indigo-600 to-cyan-600 
-                        text-white font-semibold text-lg rounded-full shadow-lg 
-                        hover:opacity-90 transform hover:-translate-y-1 transition-all
-                    ">
-                        Book Now
+                    <button
+                        disabled={vehicle.availability !== "Available"}
+                        onClick={handleBooking}
+                        className={`px-10 py-4 rounded-full text-lg font-semibold shadow-lg transition-all
+                            ${vehicle.availability === "Available" ? "bg-linear-to-r from-indigo-600 to-cyan-600 text-white hover:-translate-y-1" : "bg-gray-400 text-gray-200 cursor-not-allowed"}`
+                        }>
+                        {vehicle.availability === "Available" ? "Book Now" : "Not Available"}
                     </button>
                 </div>
 
@@ -128,6 +166,15 @@ const VehicleDetails = () => {
                     </p>
                 </div>
             </div>
+            {
+                showModal && (
+                    <ConfirmationModal
+                        title="Booking Status"
+                        message={modalMessage}
+                        onClose={() => setShowModal(false)}
+                    />
+                )
+            }
         </div>
     );
 };

@@ -3,7 +3,7 @@ import { HiDotsVertical } from "react-icons/hi";
 import { CiEdit } from "react-icons/ci";
 import { MdDelete } from "react-icons/md";
 
-const DropdownMenu = ({ vehicle, handleDelete }) => {
+const DropdownMenu = ({ vehicle, handleDelete, handleEditVehicle }) => {
     const [open, setOpen] = useState(false);
     const menuRef = useRef();
 
@@ -37,7 +37,7 @@ const DropdownMenu = ({ vehicle, handleDelete }) => {
                             <button
                                 className="w-full text-left px-2 py-1 hover:bg-gray-400 hover:cursor-pointer flex gap-1.5 items-center"
                                 onClick={() => {
-                                    console.log(vehicle)
+                                    handleEditVehicle(vehicle);
                                     setOpen(false)
                                 }}
                             >

@@ -4,12 +4,15 @@ import VehicleCardForAllVehiclePage from '../../components/VehicleCardForAllVehi
 import Loader from '../../components/Loader';
 import DropdownMenu from '../../components/DropdownMenu';
 import Swal from "sweetalert2";
+import { Link } from 'react-router';
 
 const MyVehicles = () => {
     const { user } = useContext(AuthContext);
     const [myVehicles, setMyVehicles] = useState([]);
     const [loading, setLoading] = useState(true);
     const [showModal, setShowModal] = useState(false);
+    const [editVehicle, setEditVehicle] = useState(false);
+    const [editVehicleId, setEditVehicleId] = useState(null);
 
 
     const [formData, setFormData] = useState({
@@ -26,6 +29,45 @@ const MyVehicles = () => {
         categories: "",
     })
 
+    const handleAddVehicle = () => {
+        setEditVehicle(false);
+        setEditVehicleId(null);
+        setFormData({
+            vehicleName: "",
+            owner: user?.displayName || "Unknown User",
+            category: "",
+            pricePerDay: "",
+            location: "",
+            availability: "Available",
+            description: "",
+            coverImage: "",
+            userEmail: user?.email,
+            createdAt: new Date().toISOString(),
+            categories: "",
+        });
+        setShowModal(true);
+    };
+
+
+    const handleEditVehicle = (vehicle) => {
+        setEditVehicle(true);
+        setEditVehicleId(vehicle._id);
+        setFormData({
+            vehicleName: vehicle.vehicleName,
+            owner: vehicle.owner,
+            category: vehicle.category,
+            pricePerDay: vehicle.pricePerDay,
+            location: vehicle.location,
+            availability: vehicle.availability,
+            description: vehicle.description,
+            coverImage: vehicle.coverImage,
+            userEmail: vehicle.userEmail,
+            createdAt: vehicle.createdAt,
+            categories: vehicle.categories,
+        });
+        setShowModal(true);
+    }
+
     const handleChange = (e) => {
         setFormData({
             ...formData,
@@ -35,19 +77,33 @@ const MyVehicles = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
         try {
             const token = await user.getIdToken();
-            const res = await fetch("http://localhost:3000/vehicles", {
-                method: "POST",
+
+            let url = "http://localhost:3000/vehicles";
+            let method = "POST";
+
+            if (editVehicle) {
+                url = `http://localhost:3000/vehicles/${editVehicleId}`;
+                method = "PATCH";
+            }
+
+            const res = await fetch(url, {
+                method,
                 headers: {
                     "Content-Type": "application/json",
                     "Authorization": `Bearer ${token}`
                 },
                 body: JSON.stringify(formData),
             });
+
             const data = await res.json();
             console.log(data);
+
             setShowModal(false);
+            setEditVehicle(false);
+            setEditVehicleId(null);
             window.location.reload();
         } catch (err) {
             console.log(err);
@@ -112,7 +168,7 @@ const MyVehicles = () => {
                 <h1 className="text-2xl font-bold mb-6">My Vehicles</h1>
                 {myVehicles.length > 0 && (
                     <button
-                        onClick={() => setShowModal(true)}
+                        onClick={handleAddVehicle}
                         className="px-4 py-2 bg-linear-to-br from-[#024c58] to-[#07b6d5] text-white rounded-md hover:cursor-pointer h-fit"
                     >
                         Add Vehicle
@@ -122,10 +178,10 @@ const MyVehicles = () => {
 
             {/* If NO vehicle found */}
             {myVehicles.length === 0 && (
-                <div className="text-center mt-10 h-screen flex flex-col justify-center items-center">
-                    <p className="text-lg mb-4">You have not added any vehicles yet.</p>
+                <div className="text-center mt-10 flex flex-col justify-center items-center">
+                    <h1 className="text-[#046475] text-[40px] font-extrabold">You haven’t added any vehicles yet!</h1>
                     <button
-                        onClick={() => setShowModal(true)}
+                        onClick={handleAddVehicle}
                         className="px-4 py-2 bg-linear-to-br from-[#024c58] to-[#07b6d5] text-white rounded-md hover:cursor-pointer"
                     >
                         Add Vehicle
@@ -134,13 +190,15 @@ const MyVehicles = () => {
             )}
 
             {/* If vehicles found */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="mt-3 md:mt-5 lg:mt-7.5 p-1 lg:p-0 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2.5">
                 {myVehicles.map(vehicle => (
                     <div className='relative' key={vehicle._id}>
-                        <VehicleCardForAllVehiclePage vehicle={vehicle} />
+                        <Link to={`/vehicles/${vehicle._id}`} key={vehicle._id} >
+                            <VehicleCardForAllVehiclePage vehicle={vehicle} />
+                        </Link>
 
                         <div className='absolute top-3 right-3'>
-                            <DropdownMenu vehicle={vehicle} handleDelete={handleDelete}></DropdownMenu>
+                            <DropdownMenu vehicle={vehicle} handleDelete={handleDelete} handleEditVehicle={handleEditVehicle}></DropdownMenu>
                         </div>
                     </div>
 
@@ -153,21 +211,19 @@ const MyVehicles = () => {
                     <div className="w-[750px] bg-black/80 backdrop-blur-xl border border-white/30 shadow-2xl rounded-2xl p-8 animate-[popup_.25s_ease-out]">
 
                         <h2 className="text-3xl font-bold text-center mb-6 text-white">
-                            Add New Vehicle
+                            {editVehicle ? "Edit Vehicle" : "Add New Vehicle"}
                         </h2>
 
-                        <form
-                            onSubmit={handleSubmit}
-                            className="grid grid-cols-2 gap-2"
-                        >
+                        <form onSubmit={handleSubmit} className="grid grid-cols-2 gap-2">
 
                             <input
                                 type="text"
                                 name="vehicleName"
                                 placeholder="Vehicle Name"
                                 required
+                                value={formData.vehicleName}
                                 onChange={handleChange}
-                                className="px-2 py-1 rounded-xl bg-white border border-black text-black placeholder:text-black/50 focus:outline-none"
+                                className="px-2 py-1 rounded-xl bg-white border border-black text-black"
                             />
 
                             <input
@@ -175,8 +231,9 @@ const MyVehicles = () => {
                                 name="category"
                                 placeholder="Category"
                                 required
+                                value={formData.category}
                                 onChange={handleChange}
-                                className="px-2 py-1 rounded-xl bg-white border border-black text-black placeholder:text-black/50 focus:outline-none"
+                                className="px-2 py-1 rounded-xl bg-white border border-black text-black"
                             />
 
                             <input
@@ -184,8 +241,9 @@ const MyVehicles = () => {
                                 name="pricePerDay"
                                 placeholder="Price Per Day"
                                 required
+                                value={formData.pricePerDay}
                                 onChange={handleChange}
-                                className="px-2 py-1 rounded-xl bg-white border border-black text-black placeholder:text-black/50 focus:outline-none"
+                                className="px-2 py-1 rounded-xl bg-white border border-black text-black"
                             />
 
                             <input
@@ -193,14 +251,16 @@ const MyVehicles = () => {
                                 name="location"
                                 placeholder="Location"
                                 required
+                                value={formData.location}
                                 onChange={handleChange}
-                                className="px-2 py-1 rounded-xl bg-white border border-black text-black placeholder:text-black/50 focus:outline-none"
+                                className="px-2 py-1 rounded-xl bg-white border border-black text-black"
                             />
 
                             <select
                                 name="availability"
+                                value={formData.availability}
                                 onChange={handleChange}
-                                className="px-2 py-1 rounded-xl bg-white border border-black text-black placeholder:text-black/50 focus:outline-none"
+                                className="px-2 py-1 rounded-xl bg-white border border-black text-black"
                             >
                                 <option value="Available">Available</option>
                                 <option value="Booked">Booked</option>
@@ -211,58 +271,62 @@ const MyVehicles = () => {
                                 name="coverImage"
                                 placeholder="Cover Image URL"
                                 required
+                                value={formData.coverImage}
                                 onChange={handleChange}
-                                className="px-2 py-1 rounded-xl bg-white border border-black text-black placeholder:text-black/50 focus:outline-none"
+                                className="px-2 py-1 rounded-xl bg-white border border-black text-black"
                             />
 
                             <input
                                 type="text"
                                 value={formData.owner}
                                 disabled
-                                className="px-2 py-1 rounded-xl bg-white border border-black text-black placeholder:text-black/50 focus:outline-none"
+                                className="px-2 py-1 rounded-xl bg-white border border-black text-black"
                             />
 
                             <input
                                 type="email"
                                 value={formData.userEmail}
                                 disabled
-                                className="px-2 py-1 rounded-xl bg-white border border-black text-black placeholder:text-black/50 focus:outline-none"
+                                className="px-2 py-1 rounded-xl bg-white border border-black text-black"
                             />
 
                             <input
                                 type="text"
                                 name="categories"
                                 placeholder="Categories (comma separated)"
+                                value={formData.categories}
                                 onChange={handleChange}
-                                className="px-2 py-1 rounded-xl bg-white border border-black text-black placeholder:text-black/50 focus:outline-none col-span-2"
+                                className="px-2 py-1 rounded-xl bg-white border border-black text-black col-span-2"
                             />
 
                             <textarea
                                 name="description"
                                 placeholder="Description"
                                 required
+                                value={formData.description}
                                 onChange={handleChange}
-                                className="px-2 py-1 rounded-xl bg-white border border-black text-black placeholder:text-black/50 focus:outline-none col-span-2 h-28"
+                                className="px-2 py-1 rounded-xl bg-white border border-black text-black col-span-2 h-28"
                             ></textarea>
 
                             <div className="flex justify-between col-span-2 gap-4 mt-4">
                                 <button
                                     type="button"
                                     onClick={() => setShowModal(false)}
-                                    className="btn bg-red-500 border-none text-[10px] md:text-[13px] lg:text-[16px] text-white mt-2.5"
+                                    className="btn bg-red-500 text-white border-none"
                                 >
                                     Cancel
                                 </button>
 
                                 <button
                                     type="submit"
-                                    className="btn bg-linear-to-br from-[#024c58] to-[#07b6d5] border-none text-[10px] md:text-[13px] lg:text-[16px] text-white mt-2.5"
+                                    className="btn bg-linear-to-br from-[#024c58] to-[#07b6d5] text-white border-none"
                                 >
-                                    Submit
+                                    {editVehicle ? "Update" : "Submit"}
                                 </button>
                             </div>
 
                         </form>
+
                     </div>
                 </div>
             )}
