@@ -9,6 +9,7 @@ const AllVehicles = () => {
     const [loading, setLoading] = useState(true);
     const [allVehicles, setAllVehicles] = useState([]);
     const [search, setSearch] = useState('');
+    const [sortBy, setSortBy] = useState('');
 
     useEffect(() => {
         fetch("http://localhost:3000/vehicles")
@@ -27,6 +28,26 @@ const AllVehicles = () => {
         vehicle.vehicleName.toLowerCase().includes(search.toLowerCase())
     );
 
+    const sortedVehicles = [...searchedVehicles].sort((a, b) => {
+        if (sortBy === "category") {
+            return a.category.localeCompare(b.category);
+        }
+
+        if (sortBy === "location") {
+            return a.location.localeCompare(b.location);
+        }
+
+        if (sortBy === "priceLow") {
+            return a.pricePerDay - b.pricePerDay;
+        }
+
+        if (sortBy === "priceHigh") {
+            return b.pricePerDay - a.pricePerDay;
+        }
+
+        return 0;
+    });
+
     if (loading) {
         return <p className="text-center mt-5">Loading vehicles...</p>;
     }
@@ -43,19 +64,33 @@ const AllVehicles = () => {
             </div>
 
             <div className='flex justify-between items-center p-1 lg:p-0 text-[10px] md:text-[12px] lg:text-[16px]'>
-                <p>({searchedVehicles.length}) Vehicles Found</p>
-                <SearchBox search={search} setSearch={setSearch} />
+                <p>({sortedVehicles.length}) Vehicles Found</p>
+
+                <div className='flex items-center gap-2'>
+                    <select
+                        className="px-3 py-1 border rounded-lg bg-white text-gray-600 shadow"
+                        onChange={(e) => setSortBy(e.target.value)}
+                        value={sortBy}>
+
+                        <option value="">Sort</option>
+                        <option value="category">Category (A to Z)</option>
+                        <option value="location">Location (A to Z)</option>
+                        <option value="priceLow">Price (Low to High)</option>
+                        <option value="priceHigh">Price (High to Low)</option>
+                    </select>
+                    <SearchBox search={search} setSearch={setSearch} />
+                </div>
             </div>
 
 
             <div className='mt-3'>
                 {
-                    loading ? (<Loader></Loader>) : searchedVehicles.length === 0 ? (
+                    loading ? (<Loader></Loader>) : sortedVehicles.length === 0 ? (
                         <NotFound></NotFound>
                     ) : (
                         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2.5 p-1 lg:p-0">
                             {
-                                searchedVehicles.map(vehicle => (
+                                sortedVehicles.map(vehicle => (
                                     <Link to={`/vehicles/${vehicle._id}`} key={vehicle._id}>
                                         <VehicleCardForAllVehiclePage vehicle={vehicle} />
                                     </Link>

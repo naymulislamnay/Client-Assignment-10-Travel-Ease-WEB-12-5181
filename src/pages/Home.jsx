@@ -3,6 +3,10 @@ import Slider from '../../components/Slider';
 import VehicleCard from '../../components/VehicleCard';
 import Loader from '../../components/Loader';
 import { Link } from 'react-router';
+import ReviewSection from '../../components/ReviewSection';
+import WebBenefits from '../../components/WebBenefits';
+import VehicleCategories from '../../components/VehicleCategories';
+import About from '../../components/About';
 
 const Home = () => {
     const [sliderVehicles, setSliderVehicles] = useState([]);
@@ -64,8 +68,22 @@ const Home = () => {
 
             {/* static divs */}
 
+            <VehicleCategories></VehicleCategories>
 
+            <About></About>
 
+            <div className='bg-[#f5f6fc]'>
+                <h2 className='text-2xl text-center md:text-[30px] lg:text-[36px] text-[#001931] font-bold'>
+                    Customer Reviews
+                </h2>
+                <ReviewSection></ReviewSection>
+            </div>
+
+            <WebBenefits></WebBenefits>
+
+            <div>
+                <img src="/under25.jpg" alt="Are you under 25? We have the perfect cart for you" />
+            </div>
 
         </div>
     );
