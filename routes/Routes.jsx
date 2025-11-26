@@ -1,5 +1,5 @@
 import { createBrowserRouter } from "react-router";
-import MainLayout from "../Layouts/MainLayout";
+import MainLayout from "../layouts/MainLayout";
 import ErrorPage from "../src/pages/ErrorPage";
 import Home from "../src/pages/Home";
 import LogIn from "../src/pages/LogIn";
@@ -74,6 +74,14 @@ const router = createBrowserRouter(
                         </PrivateRoute>
                     )
                 },
+                {
+                    path: '/add-vehicle',
+                    element: (
+                        <PrivateRoute>
+                            <MyVehicles></MyVehicles>
+                        </PrivateRoute>
+                    )
+                }
             ]
         }
     ]

@@ -25,7 +25,7 @@ const Navbar = () => {
                 <div className="hidden md:flex items-center gap-8 text-white font-medium">
                     <NavLink to="/" className={navLinkClass}>Home</NavLink>
                     <NavLink to="/vehicles" className={navLinkClass}>All Vehicles</NavLink>
-                    {/* <NavLink to="/add-vehicle" className={navLinkClass}>Add Vehicle</NavLink> */}
+                    <NavLink to="/add-vehicle" className={navLinkClass}>Add Vehicle</NavLink>
                     <NavLink to="/my-vehicles" className={navLinkClass}>My Vehicles</NavLink>
                     <NavLink to="/my-bookings" className={navLinkClass}>My Bookings</NavLink>
                 </div>

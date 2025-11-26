@@ -8,8 +8,18 @@ import { FaEye, FaEyeSlash } from 'react-icons/fa';
 const SignUP = () => {
     const { googleSignIn, createUserWithEmailAndPasswordFunction, } = useContext(AuthContext);
     const [show, setShow] = useState(false);
+    const [password, setPassword] = useState('');
 
     const navigate = useNavigate();
+
+    const passwordValidation = {
+        length: password.length >= 6,
+        uppercase: /[A-Z]/.test(password),
+        lowercase: /[a-z]/.test(password),
+        number: /[0-9]/.test(password)
+    };
+
+    const isPasswordValid = Object.values(passwordValidation).every(Boolean);
 
     const [formData, setFormData] = useState({
         name: '',
@@ -30,8 +40,8 @@ const SignUP = () => {
             return;
         }
 
-        if (password.length < 6) {
-            alert("Password must be at least 6 characters");
+        if (password.length < 6 || !/[A-Z]/.test(password) || !/[a-z]/.test(password) || !/[0-9]/.test(password)) {
+            alert("Password must be at least 6 characters and include uppercase, lowercase, and number");
             return;
         }
 
@@ -120,6 +130,7 @@ const SignUP = () => {
                         <div className="flex flex-col mb-4">
                             <label className="mb-1 text-sm">Name</label>
                             <input
+                                required
                                 type="text"
                                 name='name'
                                 onChange={handleChange}
@@ -160,7 +171,11 @@ const SignUP = () => {
                                 <input
                                     type={show ? "text" : "password"}
                                     name="password"
-                                    onChange={handleChange}
+                                    onChange={(e) => {
+                                        handleChange(e);
+                                        setPassword(e.target.value);
+                                    }}
+
                                     placeholder="Enter your password"
                                     className="px-4 py-3 rounded-xl bg-black/30 border border-white/40 text-white placeholder:text-blue-200 focus:outline-none w-full"
                                 />
@@ -171,6 +186,16 @@ const SignUP = () => {
                                     {show ? <FaEye /> : <FaEyeSlash />}
                                 </span>
                             </div>
+                        </div>
+
+                        <div className="mt-1 text-[10px] sm:[12px] md:text-[16px]">
+                            <p className={isPasswordValid ? 'text-green-600' : 'text-gray-500'}>
+                                Password must be at least
+                                <span className={passwordValidation.length ? 'text-green-600' : 'text-red-500'}> 6 Characters</span> long and have
+                                <span className={passwordValidation.uppercase ? 'text-green-600' : 'text-red-500'}> one Uppercase,</span>
+                                <span className={passwordValidation.lowercase ? 'text-green-600' : 'text-red-500'}> one Lowercase</span> and
+                                <span className={passwordValidation.number ? 'text-green-600' : 'text-red-500'}> one Number</span>
+                            </p>
                         </div>
 
 
