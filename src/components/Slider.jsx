@@ -7,6 +7,8 @@ import { Navigation, Pagination, Autoplay } from 'swiper/modules';
 import { Link } from 'react-router';
 
 const Slider = ({ sliderVehicles }) => {
+    const loopEnabled = sliderVehicles.length > 1;
+
     return (
         <div className="my-8">
             <Swiper
@@ -14,7 +16,7 @@ const Slider = ({ sliderVehicles }) => {
                 navigation
                 pagination={{ clickable: true }}
                 autoplay={{ delay: 3000 }}
-                loop={true}
+                loop={loopEnabled}
                 spaceBetween={30}
                 slidesPerView={1}
                 className="rounded-2xl"

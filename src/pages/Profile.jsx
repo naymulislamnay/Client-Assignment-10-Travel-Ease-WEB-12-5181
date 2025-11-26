@@ -1,12 +1,11 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { AuthContext } from '../../context/AuthContext';
+import { AuthContext } from '../context/AuthContext';
 import axios from 'axios';
 
 const Profile = () => {
     const { user, updateProfileFunction } = useContext(AuthContext);
 
     const [dbUser, setDbUser] = useState({});
-    const [loading, setLoading] = useState(true);
 
     const [showModal, setShowModal] = useState(false);
     const [name, setName] = useState('');
@@ -26,12 +25,10 @@ const Profile = () => {
                 setDbUser(userData);
                 setName(userData?.name || user.displayName || "");
                 setImage(userData?.image || "/default-Profile.png");
-                setLoading(false);
                 setIsChanged(false);
             })
             .catch(err => {
                 console.log('Error fetching user:', err);
-                setLoading(false);
             });
     }, [user]);
 

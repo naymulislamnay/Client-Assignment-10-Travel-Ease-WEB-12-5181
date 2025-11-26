@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import Slider from '../../components/Slider';
-import VehicleCard from '../../components/VehicleCard';
-import Loader from '../../components/Loader';
+import Slider from '../components/Slider';
+import VehicleCard from '../components/VehicleCard';
+import Loader from '../components/Loader';
 import { Link } from 'react-router';
-import ReviewSection from '../../components/ReviewSection';
-import WebBenefits from '../../components/WebBenefits';
-import VehicleCategories from '../../components/VehicleCategories';
-import About from '../../components/About';
+import ReviewSection from '../components/ReviewSection';
+import WebBenefits from '../components/WebBenefits';
+import VehicleCategories from '../components/VehicleCategories';
+import About from '../components/About';
 
 const Home = () => {
     const [sliderVehicles, setSliderVehicles] = useState([]);

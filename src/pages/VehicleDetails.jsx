@@ -1,11 +1,11 @@
 import axios from 'axios';
 import React, { useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router';
-import Loader from '../../components/Loader';
+import Loader from '../components/Loader';
 import { MapPin, User, Car, Calendar, Mail } from "lucide-react";
-import { formatDateTime } from '../../functionsForGlobalUse/GlobalFunction';
-import { AuthContext } from '../../context/AuthContext';
-import ConfirmationModal from '../../components/ConfirmationModal';
+import { formatDateTime } from '../functionsForGlobalUse/GlobalFunction';
+import { AuthContext } from '../context/AuthContext';
+import ConfirmationModal from '../components/ConfirmationModal';
 
 const VehicleDetails = () => {
     const { user } = useContext(AuthContext);
@@ -54,6 +54,8 @@ const VehicleDetails = () => {
                     }
                 }
             );
+
+            console.log(res);
 
             setModalMessage("Your booking was successful!");
             setShowModal(true);

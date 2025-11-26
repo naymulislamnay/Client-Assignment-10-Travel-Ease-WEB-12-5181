@@ -1,8 +1,8 @@
 import React, { useContext, useState } from 'react';
 import travelBg from "../assets/travel-bg.jpg";
 import { Link, useNavigate } from "react-router";
-import Logo from '../../components/Logo';
-import { AuthContext } from '../../context/AuthContext';
+import Logo from '../components/Logo';
+import { AuthContext } from '../context/AuthContext';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 
 const SignUP = () => {

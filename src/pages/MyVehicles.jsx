@@ -1,8 +1,8 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { AuthContext } from '../../context/AuthContext';
-import VehicleCardForAllVehiclePage from '../../components/VehicleCardForAllVehiclePage';
-import Loader from '../../components/Loader';
-import DropdownMenu from '../../components/DropdownMenu';
+import { AuthContext } from '../context/AuthContext';
+import VehicleCardForAllVehiclePage from '../components/VehicleCardForAllVehiclePage';
+import Loader from '../components/Loader';
+import DropdownMenu from '../components/DropdownMenu';
 import Swal from "sweetalert2";
 import { Link } from 'react-router';
 

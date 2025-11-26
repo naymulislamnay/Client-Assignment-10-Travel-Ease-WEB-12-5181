@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import VehicleCardForAllVehiclePage from '../../components/VehicleCardForAllVehiclePage';
+import VehicleCardForAllVehiclePage from '../components/VehicleCardForAllVehiclePage';
 import { Link } from 'react-router';
-import SearchBox from '../../components/SearchBox';
+import SearchBox from '../components/SearchBox';
 import NotFound from './NotFound';
 import { Loader } from 'lucide-react';
 
