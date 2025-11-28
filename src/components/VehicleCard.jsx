@@ -4,16 +4,22 @@ import { formatDateTime } from "../functionsForGlobalUse/GlobalFunction";
 import { Link } from "react-router";
 
 const VehicleCard = ({ vehicle }) => {
+
+  const availabilityColor =
+    vehicle.availability === "Available"
+      ? "bg-green-600"
+      : "bg-red-600";
+
   return (
     <StyledWrapper>
       <div className="flip-card">
         <div className="flip-card-inner">
 
           {/* FRONT SIDE */}
-          <div className="flip-card-front bg-[#1b233d]">
+          <div className="flip-card-front bg-[#024c58]">
             <div className="card">
               <div
-                className="top-section bg-black"
+                className="top-section bg-white"
                 style={{
                   backgroundImage: `url(${vehicle.coverImage})`,
                   backgroundRepeat: "no-repeat",
@@ -21,12 +27,15 @@ const VehicleCard = ({ vehicle }) => {
                   backgroundPosition: "center",
                 }}
               >
-                <div className="border" />
-                <div className="icons">
-                  <div className="logo">
-                    <p className="text-white">{vehicle.availability}</p>
-                  </div>
-                </div>
+
+                <span
+                  className={`
+                            absolute top-3 left-3 text-white text-xs py-1 px-3 
+                            rounded-full shadow-md ${availabilityColor}
+                        `}
+                >
+                  {vehicle.availability}
+                </span>
               </div>
 
               <div className="bottom-section">
@@ -111,7 +120,7 @@ const StyledWrapper = styled.div`
   }
 
   .flip-card-back {
-    background: #1b233d;
+    background: #024c58;
     color: white;
     transform: rotateY(180deg);
     display: flex;
@@ -134,28 +143,6 @@ const StyledWrapper = styled.div`
     height: 120px;
     border-radius: 15px;
     position: relative;
-  }
-
-  .border {
-    width: 130px;
-    height: 30px;
-    background: #1b233d;
-    border-bottom-right-radius: 10px;
-    transform: skew(-40deg);
-    box-shadow: -10px -10px 0 0 #1b233d;
-  }
-
-  .icons {
-    position: absolute;
-    width: 100%;
-    height: 30px;
-    top: 0;
-    display: flex;
-    justify-content: space-between;
-  }
-
-  .logo {
-    padding: 7px 0 7px 15px;
   }
 
   .bottom-section {

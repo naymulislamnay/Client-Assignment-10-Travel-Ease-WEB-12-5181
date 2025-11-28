@@ -47,6 +47,24 @@ const reviews = [
 
 const ReviewSlider = () => {
     const [index, setIndex] = useState(0);
+    const [cardsToShow, setCardsToShow] = useState(1);
+
+    // Handle responsiveness
+    const updateCardCount = () => {
+        if (window.innerWidth >= 1024) {
+            setCardsToShow(3);
+        } else if (window.innerWidth >= 768) {
+            setCardsToShow(2);
+        } else {
+            setCardsToShow(1);
+        }
+    };
+
+    useEffect(() => {
+        updateCardCount();
+        window.addEventListener("resize", updateCardCount);
+        return () => window.removeEventListener("resize", updateCardCount);
+    }, []);
 
     const nextSlide = () => {
         setIndex((prev) => (prev + 1) % reviews.length);
@@ -61,13 +79,10 @@ const ReviewSlider = () => {
         return () => clearInterval(timer);
     }, []);
 
-    // Helper to display 3 reviews at a time
     const getVisibleReviews = () => {
-        return [
-            reviews[index],
-            reviews[(index + 1) % reviews.length],
-            reviews[(index + 2) % reviews.length],
-        ];
+        return Array.from({ length: cardsToShow }, (_, i) => {
+            return reviews[(index + i) % reviews.length];
+        });
     };
 
     return (
@@ -76,17 +91,17 @@ const ReviewSlider = () => {
             {/* Left Button */}
             <button
                 onClick={prevSlide}
-                className="w-10 h-10 flex items-center justify-center rounded-full border bg-white shadow hover:bg-gray-100"
+                className="w-6 md:w-10 h-6 md:h-10 flex items-center justify-center rounded-full border bg-white shadow hover:bg-gray-100"
             >
                 <ChevronLeft size={20} />
             </button>
 
-            {/* Reviews Container */}
+            {/* Cards */}
             <div className="flex gap-4 overflow-hidden">
                 {getVisibleReviews().map((review, i) => (
                     <div
                         key={i}
-                        className="w-[350px] bg-white rounded-xl border p-5 shadow-sm"
+                        className="w-[300px] md:w-[350px] bg-white rounded-xl border p-2 md:p-3 lg:p-5 shadow-sm"
                     >
 
                         {/* User Avatar */}
@@ -116,14 +131,14 @@ const ReviewSlider = () => {
                         </div>
 
                         {/* Stars */}
-                        <div className="flex gap-1 my-2">
+                        <div className="flex gap-1 my-1 md:my-2">
                             {[...Array(5)].map((_, i) => (
-                                <span key={i} className="text-yellow-500 text-lg">★</span>
+                                <span key={i} className="text-yellow-500 text-[12px] md:text-[16px]">★</span>
                             ))}
                         </div>
 
                         {/* Text */}
-                        <p className="text-sm text-gray-700">
+                        <p className="text-[12px] md:text-[14px] text-gray-700">
                             {review.text}
                         </p>
                     </div>
@@ -133,7 +148,7 @@ const ReviewSlider = () => {
             {/* Right Button */}
             <button
                 onClick={nextSlide}
-                className="w-10 h-10 flex items-center justify-center rounded-full border bg-white shadow hover:bg-gray-100"
+                className="w-6 md:w-10 h-6 md:h-10 flex items-center justify-center rounded-full border bg-white shadow hover:bg-gray-100"
             >
                 <ChevronRight size={20} />
             </button>

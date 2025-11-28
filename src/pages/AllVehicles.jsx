@@ -3,7 +3,8 @@ import VehicleCardForAllVehiclePage from '../components/VehicleCardForAllVehicle
 import { Link } from 'react-router';
 import SearchBox from '../components/SearchBox';
 import NotFound from './NotFound';
-import { Loader } from 'lucide-react';
+import Loader from '../components/Loader';
+
 
 const AllVehicles = () => {
     const [loading, setLoading] = useState(true);
@@ -12,7 +13,7 @@ const AllVehicles = () => {
     const [sortBy, setSortBy] = useState('');
 
     useEffect(() => {
-        fetch("http://localhost:3000/vehicles")
+        fetch("https://travel-ease-server-delta.vercel.app/vehicles")
             .then(res => res.json())
             .then(data => {
                 setAllVehicles(data);
@@ -49,14 +50,14 @@ const AllVehicles = () => {
     });
 
     if (loading) {
-        return <p className="text-center mt-5">Loading vehicles...</p>;
+        return (<Loader></Loader>);
     }
 
     return (
         <div>
             <div className='pt-1 md:pt-5 lg:pt-10 text-center'>
-                <h2 className='text-2xl md:text-[30px] lg:text-[36px] text-[#001931] font-bold'>
-                    Choose Vehicles to Make your Tour Easy
+                <h2 className='text-xl md:text-[30px] lg:text-[36px] text-[#001931] font-bold'>
+                    Choose Vehicles to <br className='md:hidden' /> Make your Tour Easy
                 </h2>
                 <p className='text-[10px] md:text-[12px] lg:text-[16px] w-3/4 md:w-full mx-auto text-[#627382]'>
                     Explore All Kind of Vehicles for your Ride.
@@ -68,7 +69,7 @@ const AllVehicles = () => {
 
                 <div className='flex items-center gap-2'>
                     <select
-                        className="px-3 py-1 border rounded-lg bg-white text-gray-600 shadow"
+                        className="px-1 w-[100px] md:w-fit md:px-2 lg:px-3 py-1 border rounded-lg bg-white text-gray-600 shadow"
                         onChange={(e) => setSortBy(e.target.value)}
                         value={sortBy}>
 
@@ -88,7 +89,7 @@ const AllVehicles = () => {
                     loading ? (<Loader></Loader>) : sortedVehicles.length === 0 ? (
                         <NotFound></NotFound>
                     ) : (
-                        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2.5 p-1 lg:p-0">
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-2.5 p-1 lg:p-0">
                             {
                                 sortedVehicles.map(vehicle => (
                                     <Link to={`/vehicles/${vehicle._id}`} key={vehicle._id}>

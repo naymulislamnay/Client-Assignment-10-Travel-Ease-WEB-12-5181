@@ -14,7 +14,7 @@ const Home = () => {
 
     // fetch Slider Vehicle Data from MongoDB
     useEffect(() => {
-        fetch("http://localhost:3000/latest-vehicles")
+        fetch("https://travel-ease-server-delta.vercel.app/latest-vehicles")
             .then(res => res.json())
             .then(data => {
                 setSliderVehicles(data);
@@ -26,7 +26,7 @@ const Home = () => {
 
     // fetch Latest Vehicle Data from MongoDB for Homepage
     useEffect(() => {
-        fetch("http://localhost:3000/latest-vehicles")
+        fetch("https://travel-ease-server-delta.vercel.app/latest-vehicles")
             .then(res => res.json())
             .then(data => {
                 setLatestVehicles(data);
@@ -49,7 +49,7 @@ const Home = () => {
             </div>
 
             {
-                <div className="mt-3 md:mt-5 lg:mt-7.5 p-1 lg:p-0 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2.5">
+                <div className="mt-3 md:mt-5 lg:mt-7.5 p-1 lg:p-0 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-2.5">
                     {
                         latestVehicles.map(vehicle => (
                             <Link to={`/vehicles/${vehicle._id}`} key={vehicle._id}>
@@ -72,7 +72,7 @@ const Home = () => {
 
             <About></About>
 
-            <div className='bg-[#f5f6fc]'>
+            <div className='bg-[#f5f6fc] pt-5'>
                 <h2 className='text-2xl text-center md:text-[30px] lg:text-[36px] text-[#001931] font-bold'>
                     Customer Reviews
                 </h2>
@@ -82,7 +82,7 @@ const Home = () => {
             <WebBenefits></WebBenefits>
 
             <div>
-                <img src="/under25.jpg" alt="Are you under 25? We have the perfect cart for you" />
+                <img src="/under25.jpg" alt="Are you under 25? We have the PERFECT CAR for you" />
             </div>
 
         </div>

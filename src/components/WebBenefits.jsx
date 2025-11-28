@@ -21,11 +21,11 @@ const WebBenefits = () => {
     ];
 
     return (
-        <div className="bg-[#f5f6fc] py-10 flex justify-center gap-10 flex-wrap">
+        <div className="bg-[#f5f6fc] py-5 md:py-10 flex justify-center gap-2 md:gap-5 lg:gap-10 flex-wrap px-2">
             {benefits.map((item, i) => (
                 <div
                     key={i}
-                    className="bg-white w-[360px] text-center px-6 py-6 rounded-xl shadow-sm hover:shadow-md transition"
+                    className="bg-white max-w-[360px] text-center px-6 py-6 rounded-xl shadow-sm hover:shadow-md transition"
                 >
                     <div className="mb-3 flex justify-center">{item.icon}</div>
                     <h3 className="text-lg font-semibold text-gray-800 mb-2">

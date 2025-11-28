@@ -20,11 +20,11 @@ const VehicleDetails = () => {
     useEffect(() => {
         const fetchVehicle = async () => {
             try {
-                const res = await axios.get(`http://localhost:3000/vehicles/${id}`);
+                const res = await axios.get(`https://travel-ease-server-delta.vercel.app/vehicles/${id}`);
                 setVehicle(res.data);
             } catch (err) {
                 console.error(err);
-                setError('Failed to load vehicle details.');
+                setError('Something Went Wrong. Please Try Again Later');
             } finally {
                 setLoading(false);
             }
@@ -43,7 +43,7 @@ const VehicleDetails = () => {
             const token = await user.getIdToken();
 
             const res = await axios.post(
-                "http://localhost:3000/bookings",
+                "https://travel-ease-server-delta.vercel.app/bookings",
                 {
                     vehicleId: id,
                     email: user.email
@@ -60,7 +60,7 @@ const VehicleDetails = () => {
             setModalMessage("Your booking was successful!");
             setShowModal(true);
 
-            const updated = await axios.get(`http://localhost:3000/vehicles/${id}`);
+            const updated = await axios.get(`https://travel-ease-server-delta.vercel.app/vehicles/${id}`);
             setVehicle(updated.data);
 
         } catch (err) {
@@ -71,38 +71,37 @@ const VehicleDetails = () => {
     };
 
     return (
-        <div className="max-w-5xl mx-auto my-10 p-6">
+        <div className="max-w-5xl mx-auto my-2 md:my-3 lg:my-10 p-1 md:p-2 lg:p-6">
 
             {/* HEADER IMAGE WITH OVERLAY */}
-            <div className="relative rounded-3xl shadow-xl overflow-hidden">
+            <div className="relative rounded-xl md:rounded-2xl lg:rounded-3xl shadow-xl overflow-hidden">
                 <img
                     src={vehicle.coverImage}
                     alt={vehicle.vehicleName}
-                    className="w-full h-[420px] object-cover"
+                    className="w-full h-[200px] sm:h-[300px] md:h-[420px] object-cover"
                 />
 
                 {/* Gradient Overlay */}
-                <div className="absolute inset-0 bg-linear-to-b from-black/40 to-black/80 flex flex-col justify-end p-8">
-                    <h1 className="text-4xl md:text-5xl font-extrabold text-white drop-shadow-lg">
+                <div className="absolute inset-0 bg-linear-to-b from-black/40 to-black/80 flex flex-col justify-end p-3 md:p-6 lg:p-8">
+                    <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-extrabold text-white drop-shadow-lg">
                         {vehicle.vehicleName}
                     </h1>
-                    <p className="text-indigo-200 font-medium text-lg mt-1">
+                    <p className="text-indigo-200 font-medium text-[12px] sm:text-[14px] md:text-[16px] text-lg mt-1">
                         {vehicle.category}
                     </p>
                 </div>
             </div>
 
             {/* MAIN SECTION */}
-            <div className="bg-white rounded-3xl shadow-lg p-8 mt-8 space-y-8 animate-fadeIn">
+            <div className="bg-white rounded-xl md:rounded-2xl lg:rounded-3xl shadow-lg p-2 sm:p-4 md:p-6 lg:p-8 mt-2 sm:mt-4 md:mt-6 lg:mt-8 space-y-4 md:space-y-6 lg:space-y-8 animate-fadeIn">
 
                 {/* PRICE */}
                 <div className="flex justify-between items-center">
-                    <h2 className="text-3xl font-bold bg-linear-to-r from-cyan-600 to-indigo-600 bg-clip-text text-transparent">
+                    <h2 className="text-xl md:text-2xl lg:text-3xl font-bold bg-linear-to-r from-cyan-600 to-indigo-600 bg-clip-text text-transparent">
                         ${vehicle.pricePerDay} / day
                     </h2>
 
-                    <span className={`
-                        px-4 py-1.5 rounded-full text-white font-semibold text-sm shadow-md
+                    <span className={`px-2 md:px-3 lg:px-4 py-1.5 rounded-lg md:rounded-full text-white font-semibold text-[10px] md:text-[12px] lg:text-sm shadow-md
                         ${vehicle.availability === "Available" ? "bg-green-600" : "bg-red-600"}
                     `}>
                         {vehicle.availability}
@@ -110,27 +109,27 @@ const VehicleDetails = () => {
                 </div>
 
                 {/* INFO GRID */}
-                <div className="grid md:grid-cols-3 gap-6">
+                <div className="grid md:grid-cols-3 gap-2 md:gap-4 lg:gap-6">
 
-                    <div className="bg-gray-50 p-5 rounded-2xl shadow-sm border flex items-start gap-3">
+                    <div className="bg-gray-50 p-2 md:p-3 lg:p-5 rounded-lg md:rounded-xl lg:rounded-2xl shadow-sm border flex items-start gap-2 md:gap-3">
                         <User className="text-indigo-600" />
-                        <div>
+                        <div className='text-[14px] md:text-[16px]'>
                             <h3 className="font-semibold text-gray-700">Owner</h3>
                             <p className="text-gray-600">{vehicle.owner}</p>
                         </div>
                     </div>
 
-                    <div className="bg-gray-50 p-5 rounded-2xl shadow-sm border flex items-start gap-3">
+                    <div className="bg-gray-50 p-2 md:p-3 lg:p-5 rounded-lg md:rounded-xl lg:rounded-2xl shadow-sm border flex items-start gap-2 md:gap-3">
                         <MapPin className="text-indigo-600" />
-                        <div>
+                        <div className='text-[14px] md:text-[16px]'>
                             <h3 className="font-semibold text-gray-700">Location</h3>
                             <p className="text-gray-600">{vehicle.location}</p>
                         </div>
                     </div>
 
-                    <div className="bg-gray-50 p-5 rounded-2xl shadow-sm border flex items-start gap-3">
+                    <div className="bg-gray-50 p-2 md:p-3 lg:p-5 rounded-lg md:rounded-xl lg:rounded-2xl shadow-sm border flex items-start gap-2 md:gap-3">
                         <Car className="text-indigo-600" />
-                        <div>
+                        <div className='text-[14px] md:text-[16px]'>
                             <h3 className="font-semibold text-gray-700">Type</h3>
                             <p className="text-gray-600">{vehicle.categories}</p>
                         </div>
@@ -139,9 +138,9 @@ const VehicleDetails = () => {
                 </div>
 
                 {/* DESCRIPTION */}
-                <div className="p-6 bg-gray-50 rounded-2xl shadow-sm border">
-                    <h3 className="font-semibold text-gray-700 text-lg mb-2">Description</h3>
-                    <p className="text-gray-600 leading-relaxed">
+                <div className="p-2 md:p-3 lg:p-5 rounded-lg md:rounded-xl lg:rounded-2xl bg-gray-50 shadow-sm border">
+                    <h3 className="font-semibold text-gray-700 text-[16px] md:text-lg mb-1 md:mb-2">Description</h3>
+                    <p className="text-gray-600 leading-relaxed text-[14px] md:text-[16px]">
                         {vehicle.description}
                     </p>
                 </div>
@@ -151,19 +150,18 @@ const VehicleDetails = () => {
                     <button
                         disabled={vehicle.availability !== "Available"}
                         onClick={handleBooking}
-                        className={`px-10 py-4 rounded-full text-lg font-semibold shadow-lg transition-all
-                            ${vehicle.availability === "Available" ? "bg-linear-to-r from-indigo-600 to-cyan-600 text-white hover:-translate-y-1" : "bg-gray-400 text-gray-200 cursor-not-allowed"}`
+                        className={`px-3 md:px-5 lg:px-10 h-fit py-2 md:py-4 rounded-full text-lg font-semibold shadow-lg transition-all
+                            ${vehicle.availability === "Available" ? "hover:cursor-pointer bg-linear-to-r from-indigo-600 to-cyan-600 text-white hover:-translate-y-1" : "bg-gray-400 text-gray-200"}`
                         }>
                         {vehicle.availability === "Available" ? "Book Now" : "Not Available"}
                     </button>
                 </div>
 
-                {/* FOOTER DETAILS */}
                 <div className="text-center text-gray-500 text-sm space-y-1">
-                    <p className="flex justify-center items-center gap-2">
+                    <p className="flex justify-center items-center gap-1 md:gap-2 text-[12px] md:text-[14px]">
                         <Calendar size={16} /> Added on: {formatDateTime(vehicle.createdAt)}
                     </p>
-                    <p className="flex justify-center items-center gap-2">
+                    <p className="flex justify-center items-center gap-1 md:gap-2 text-[12px] md:text-[14px]">
                         <Mail size={16} /> Owner Email: {vehicle.userEmail}
                     </p>
                 </div>

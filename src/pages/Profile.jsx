@@ -19,7 +19,7 @@ const Profile = () => {
     useEffect(() => {
         if (!user?.email) return;
 
-        axios.get(`http://localhost:3000/users/${user.email}`)
+        axios.get(`https://travel-ease-server-delta.vercel.app/users/${user.email}`)
             .then(res => {
                 const userData = res.data;
                 setDbUser(userData);
@@ -42,7 +42,7 @@ const Profile = () => {
             // if using Firebase update
             await updateProfileFunction(name, image);
 
-            await axios.patch(`http://localhost:3000/users/${user.email}`, {
+            await axios.patch(`https://travel-ease-server-delta.vercel.app/users/${user.email}`, {
                 name,
                 image
             });
