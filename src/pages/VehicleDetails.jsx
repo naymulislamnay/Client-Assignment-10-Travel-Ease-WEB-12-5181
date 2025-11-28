@@ -82,7 +82,7 @@ const VehicleDetails = () => {
                 />
 
                 {/* Gradient Overlay */}
-                <div className="absolute inset-0 bg-linear-to-b from-black/40 to-black/80 flex flex-col justify-end p-3 md:p-6 lg:p-8">
+                <div className="absolute inset-0 bg-linear-to-b from-black/20 to-black/60 flex flex-col justify-end p-3 md:p-6 lg:p-8">
                     <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-extrabold text-white drop-shadow-lg">
                         {vehicle.vehicleName}
                     </h1>

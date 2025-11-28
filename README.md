@@ -1,16 +1,66 @@
-# React + Vite
+TravelEase – Vehicle Rental Web Application
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+TravelEase is a full-stack MERN + Firebase web application that allows users to browse, rent, manage, and list vehicles. The project includes a secure authentication system, dynamic vehicle listings and a booking system. Users can manage their vehicles.
 
-Currently, two official plugins are available:
+Live Link: https://travelease-assignment-10.netlify.app
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Database: MongoDB Atlas
+Authentication: Firebase Authentication
 
-## React Compiler
+🚀 Features
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+🔐 Authentication
 
-## Expanding the ESLint configuration
+Protected routes on both client and server
+Automatic user onboarding
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+🚗 Vehicle Management
+Add new vehicles
+Edit vehicle details
+Delete vehicle
+View all vehicles
+Sort newest vehicles first
+
+🛒 Booking System
+Users can book vehicles
+Prevents double-booking
+Releases booking
+Shows logged-in user’s bookings
+Updates availability automatically
+
+🏠 Homepage Sections
+Hero Slider (Swiper.js)
+Latest Vehicles
+Vehicle Categories
+About Section
+Customer Reviews
+Benefits Section
+
+⚙️ Server Features
+Node.js + Express backend
+Firebase Admin SDK for token validation
+
+MongoDB Atlas with 3 collections:
+users-data
+vehicles-data
+booking-data
+
+🛠️ Tech Stack
+
+Frontend
+React.js
+React Router
+Tailwind CSS
+Swiper.js
+Firebase Authentication
+
+Backend
+Node.js
+Express.js
+Firebase Admin SDK
+MongoDB Atlas
+
+Deployment
+Client: Netlify
+Server: Vercel
+Database: MongoDB Atlas

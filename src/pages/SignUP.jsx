@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import travelBg from "../assets/travel-bg.jpg";
+import travelBg from "/travel-bg.jpg";
 import { Link, useNavigate } from "react-router";
 import Logo from '../components/Logo';
 import { AuthContext } from '../context/AuthContext';

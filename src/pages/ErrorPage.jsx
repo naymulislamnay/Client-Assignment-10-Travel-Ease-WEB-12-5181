@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router";
-import travelBg from "../assets/travel-bg.jpg"; // same background for consistency
+import travelBg from "/travel-bg.jpg";
 
 const ErrorPage = () => {
     return (
