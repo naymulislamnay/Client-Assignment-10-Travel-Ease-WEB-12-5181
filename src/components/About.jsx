@@ -1,5 +1,6 @@
 import React from "react";
 import Logo from "./Logo";
+import { Link } from "react-router";
 
 const About = () => {
     return (
@@ -23,9 +24,11 @@ const About = () => {
                     on every ride. With easy booking, transparent pricing, and top-notch
                     customer service, your next trip starts here.
                 </p>
-                <button className="bg-[#0017C5] hover:bg-[#0013a0] text-white font-semibold px-3 md:px-6 py-2 md:py-3 rounded-md transition text-[12px] md:text-[16px]">
-                    Learn More
-                </button>
+                <Link to='/about'>
+                    <button className="btn bg-linear-to-br from-[#024c58] to-[#07b6d5] border-none lg:text-[16px] text-white my-4 text-[12px] md:text-[16px]">
+                        Learn More
+                    </button>
+                </Link>
 
             </div>
         </section>

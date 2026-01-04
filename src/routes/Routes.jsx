@@ -10,6 +10,8 @@ import VehicleDetails from "../pages/VehicleDetails";
 import MyBookings from "../pages/MyBookings";
 import MyVehicles from "../pages/MyVehicles";
 import PrivateRoute from "../privateRoute/PrivateRoute";
+import AboutDetails from "../components/AboutDetails";
+import DashboardLayout from "../layouts/DashboardLayout";
 
 const router = createBrowserRouter(
     [
@@ -35,55 +37,43 @@ const router = createBrowserRouter(
                     element: <SignUP></SignUP>
                 },
                 {
-                    path: '/profile',
-                    element: (
-                        <PrivateRoute>
-                            <Profile></Profile>
-                        </PrivateRoute>
-                    )
-                },
-                {
                     path: '/vehicles',
                     element: (
-                        <PrivateRoute>
-                            <AllVehicles></AllVehicles>
-                        </PrivateRoute>
+                        <AllVehicles></AllVehicles>
                     )
                 },
                 {
                     path: '/vehicles/:id',
                     element: (
-                        <PrivateRoute>
-                            <VehicleDetails></VehicleDetails>
-                        </PrivateRoute>
+                        <VehicleDetails></VehicleDetails>
                     )
                 },
                 {
-                    path: '/my-bookings',
+                    path: '/about',
                     element: (
-                        <PrivateRoute>
-                            <MyBookings></MyBookings>
-                        </PrivateRoute>
-                    )
-                },
-                {
-                    path: '/my-vehicles',
-                    element: (
-                        <PrivateRoute>
-                            <MyVehicles></MyVehicles>
-                        </PrivateRoute>
-                    )
-                },
-                {
-                    path: '/add-vehicle',
-                    element: (
-                        <PrivateRoute>
-                            <MyVehicles></MyVehicles>
-                        </PrivateRoute>
+                        <AboutDetails></AboutDetails>
                     )
                 }
             ]
-        }
+        },
+        {
+            path: 'dashboard',
+            element: (
+                <PrivateRoute>
+                    <DashboardLayout />
+                </PrivateRoute>
+            ),
+            children: [
+                {
+                    index: true,  // <-- this will render by default for /dashboard
+                    element: <Profile />
+                },
+                { path: 'profile', element: <Profile /> },
+                { path: 'my-bookings', element: <MyBookings></MyBookings> },
+                { path: 'my-vehicles', element: <MyVehicles></MyVehicles> },
+                { path: 'add-vehicle', element: <MyVehicles></MyVehicles> },
+            ],
+        },
     ]
 )
 

@@ -19,9 +19,13 @@ const Navbar = () => {
         <>
             <NavLink to="/" className={navLinkClass}>Home</NavLink>
             <NavLink to="/vehicles" className={navLinkClass}>All Vehicles</NavLink>
-            <NavLink to="/add-vehicle" className={navLinkClass}>Add Vehicle</NavLink>
-            <NavLink to="/my-vehicles" className={navLinkClass}>My Vehicles</NavLink>
-            <NavLink to="/my-bookings" className={navLinkClass}>My Bookings</NavLink>
+            {
+                user && <>
+                    <NavLink to="/dashboard/add-vehicle" className={navLinkClass}>Add Vehicle</NavLink>
+                    <NavLink to="/dashboard/my-vehicles" className={navLinkClass}>My Vehicles</NavLink>
+                    <NavLink to="/dashboard/my-bookings" className={navLinkClass}>My Bookings</NavLink>
+                </>
+            }
         </>
     )
 
@@ -72,7 +76,7 @@ const Navbar = () => {
                     {/* if user is logged in */}
                     {user && (
                         <div className="group cursor-pointer flex items-center gap-1.5">
-                            <Link to='/profile'>
+                            <Link to='dashboard/profile'>
                                 <img
                                     src={user.photoURL || '/default-Profile.png'}
                                     alt={user.displayName} title={user.displayName}

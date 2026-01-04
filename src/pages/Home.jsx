@@ -7,6 +7,8 @@ import ReviewSection from '../components/ReviewSection';
 import WebBenefits from '../components/WebBenefits';
 import VehicleCategories from '../components/VehicleCategories';
 import About from '../components/About';
+import FaqSection from '../components/FaqSection';
+import VehicleCardForAllVehiclePage from '../components/VehicleCardForAllVehiclePage';
 
 const Home = () => {
     const [sliderVehicles, setSliderVehicles] = useState([]);
@@ -53,7 +55,7 @@ const Home = () => {
                     {
                         latestVehicles.map(vehicle => (
                             <Link to={`/vehicles/${vehicle._id}`} key={vehicle._id}>
-                                <VehicleCard vehicle={vehicle}></VehicleCard>
+                                <VehicleCardForAllVehiclePage vehicle={vehicle}></VehicleCardForAllVehiclePage>
                             </Link>
                         ))
                     }
@@ -80,6 +82,8 @@ const Home = () => {
             </div>
 
             <WebBenefits></WebBenefits>
+
+            <FaqSection></FaqSection>
 
             <div>
                 <img src="/under25.jpg" alt="Are you under 25? We have the PERFECT CAR for you" />
